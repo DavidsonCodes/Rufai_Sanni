@@ -29,7 +29,7 @@ public class AccountUser extends RepresentationModel<AccountUser> {
 
     @Email(message = "Provide a valid email address")
     @NotBlank(message = "This field cannot be blank")
-    private String email;
+    private String username;
     @NotBlank(message = "This field cannot be blank")
     @Length(min=8, max=20)
     private String password;
@@ -61,11 +61,11 @@ public class AccountUser extends RepresentationModel<AccountUser> {
     }
 
     public String getEmail() {
-        return email;
+        return username;
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.username = email;
     }
 
     public String getPassword() {
