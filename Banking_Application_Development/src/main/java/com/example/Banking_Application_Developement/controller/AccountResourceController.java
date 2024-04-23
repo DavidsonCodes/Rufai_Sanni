@@ -3,6 +3,7 @@ package com.example.Banking_Application_Developement.controller;
 import com.example.Banking_Application_Developement.model.AccountResource;
 import com.example.Banking_Application_Developement.model.AccountUser;
 import com.example.Banking_Application_Developement.service.AccountUserService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
 import org.springframework.http.HttpStatus;
@@ -17,11 +18,12 @@ import org.springframework.web.servlet.tags.HtmlEscapeTag;
 @RestController
 @RequestMapping("/resources")
 public class AccountResourceController {
+    @Autowired
     private AccountUserService accountUserService;
 
-    public AccountResourceController(AccountUserService accountUserService) {
-        this.accountUserService = accountUserService;
-    }
+//    public AccountResourceController(AccountUserService accountUserService) {
+//        this.accountUserService = accountUserService;
+//    }
 
     @GetMapping("/resource/{id}")
     public ResponseEntity<AccountResource> getAccountResource(@PathVariable int id){
@@ -33,7 +35,9 @@ public class AccountResourceController {
         Link delete = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AccountUserController.class).deleteAccountUser(id)).withRel("delete");
         Link update = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AccountUserController.class).updateAccountUser(id, accountUserToSend)).withRel("update");
         Link allAccounts = WebMvcLinkBuilder.linkTo(WebMvcLinkBuilder.methodOn(AccountUserController.class).getAllAccountUsers()).withRel("allAccounts");
-        accountResource.add(selfLink, delete, update, allAccounts);
+
+
+                accountResource.add(selfLink, delete, update, allAccounts);
         return  new ResponseEntity<>(accountResource, HttpStatus.OK);
     }
 }

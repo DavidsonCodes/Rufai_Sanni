@@ -14,7 +14,6 @@ import java.util.Map;
 import java.util.Optional;
 
 @Service
-//@Component
 public class AccountUserService {
 //    @Autowired
     private final AccountUserRepository accountUserRepository;
@@ -33,12 +32,12 @@ public class AccountUserService {
         return new ResponseEntity<>(accountUserRepository.findById(id).get(), HttpStatus.OK);
     }
     // Get Account user by email
-    public ResponseEntity<AccountUser> getAccountUserByEmail(String email){
-        return new ResponseEntity<>(accountUserRepository.findByEmail(email), HttpStatus.OK);
+    public ResponseEntity<AccountUser> getAccountUserByUsername(String username){
+        return new ResponseEntity<>(accountUserRepository.getByUsername(username), HttpStatus.OK);
     }
     // Get Account user by PhoneNumber
     public ResponseEntity<AccountUser> getAccountUserByPhoneNumber(String phoneNumber){
-        return new ResponseEntity<>(accountUserRepository.findByPhoneNumber(phoneNumber), HttpStatus.OK);
+        return new ResponseEntity<>(accountUserRepository.getByPhoneNumber(phoneNumber), HttpStatus.OK);
     }
 
     // Create New Account User
@@ -53,41 +52,41 @@ public class AccountUserService {
         accountUserFromDb.setFirstName(accountUser.getFirstName());
         accountUserFromDb.setMiddleName(accountUser.getMiddleName());
         accountUserFromDb.setLastName(accountUser.getLastName());
-        accountUserFromDb.setEmail(accountUser.getEmail());
+        accountUserFromDb.setUsername(accountUser.getUsername());
         accountUserFromDb.setPassword(accountUser.getPassword());
         accountUserFromDb.setPhoneNumber(accountUser.getPhoneNumber());
         return new ResponseEntity<>(accountUserRepository.save(accountUser), HttpStatus.CREATED);
     }
 
     // Update a particular filed of an existing Account User
-    public ResponseEntity<AccountUser> updateOneFieldOfAccountUser(int id, Map<String, Object> accountUser){
-        Optional<AccountUser> accountUserFromDb = accountUserRepository.findById(id);
-        if(accountUserFromDb.isPresent()){
-            AccountUser accountToUpdate = accountUserFromDb.get();
-
-            if(accountUser.containsKey("firstName")){
-                accountToUpdate.setFirstName((String) accountUser.get("firstName"));
-            }
-            if(accountUser.containsKey("lastName")){
-                accountToUpdate.setFirstName((String) accountUser.get("lastName"));
-            }
-            if(accountUser.containsKey("email")){
-                accountToUpdate.setFirstName((String) accountUser.get("email"));
-            }
-            if(accountUser.containsKey("password")){
-                accountToUpdate.setFirstName((String) accountUser.get("password"));
-            }
-            if(accountUser.containsKey("phoneNumber")){
-                accountToUpdate.setFirstName((String) accountUser.get("phoneNumber"));
-            }
-            AccountUser updatedAccountUser = accountUserRepository.save(accountToUpdate);
-
-            return new ResponseEntity<>(updatedAccountUser, HttpStatus.CREATED);
-        }
-        else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-    }
+//    public ResponseEntity<AccountUser> updateOneFieldOfAccountUser(int id, Map<String, Object> accountUser){
+//        Optional<AccountUser> accountUserFromDb = accountUserRepository.findById(id);
+//        if(accountUserFromDb.isPresent()){
+//            AccountUser accountToUpdate = accountUserFromDb.get();
+//
+//            if(accountUser.containsKey("firstName")){
+//                accountToUpdate.setFirstName((String) accountUser.get("firstName"));
+//            }
+//            if(accountUser.containsKey("lastName")){
+//                accountToUpdate.setFirstName((String) accountUser.get("lastName"));
+//            }
+//            if(accountUser.containsKey("email")){
+//                accountToUpdate.setFirstName((String) accountUser.get("email"));
+//            }
+//            if(accountUser.containsKey("password")){
+//                accountToUpdate.setFirstName((String) accountUser.get("password"));
+//            }
+//            if(accountUser.containsKey("phoneNumber")){
+//                accountToUpdate.setFirstName((String) accountUser.get("phoneNumber"));
+//            }
+//            AccountUser updatedAccountUser = accountUserRepository.save(accountToUpdate);
+//
+//            return new ResponseEntity<>(updatedAccountUser, HttpStatus.CREATED);
+//        }
+//        else {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//    }
 
     // Remove Account User
     public ResponseEntity<AccountUser> removeAccountUser(int id){

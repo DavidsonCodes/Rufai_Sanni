@@ -41,8 +41,8 @@ public class AccountUserController {
     }
     // Get Account User By Email
     @GetMapping("/accountUser/email/{email}")
-    public ResponseEntity<AccountUser> getAccountUserByEmail(@PathVariable String email){
-        return accountUserService.getAccountUserByEmail(email);
+    public ResponseEntity<AccountUser> getAccountUserByUsername(@PathVariable String username){
+        return accountUserService.getAccountUserByUsername(username);
     }
 
     // Add new Account User
@@ -58,10 +58,10 @@ public class AccountUserController {
     }
 
     // Update an existing Account user field
-    @PatchMapping("/patchUpdateUser/{id}")
-    public ResponseEntity<AccountUser> updateOneFieldOfAccountUser(@PathVariable int id, @RequestBody  Map<String, Object> accountUser){
-        return accountUserService.updateOneFieldOfAccountUser(id, accountUser);
-    }
+//    @PatchMapping("/patchUpdateUser/{id}")
+//    public ResponseEntity<AccountUser> updateOneFieldOfAccountUser(@PathVariable int id, @RequestBody  Map<String, Object> accountUser){
+//        return accountUserService.updateOneFieldOfAccountUser(id, accountUser);
+//    }
 
     // Remove an existing user
     @DeleteMapping("/deleteUser/{id}")
