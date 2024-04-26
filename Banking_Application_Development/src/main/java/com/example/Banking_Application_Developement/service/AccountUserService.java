@@ -1,11 +1,17 @@
 package com.example.Banking_Application_Developement.service;
 
 import com.example.Banking_Application_Developement.model.AccountUser;
+import com.example.Banking_Application_Developement.model.LoginRequest;
+import com.example.Banking_Application_Developement.model.LoginResponse;
 import com.example.Banking_Application_Developement.repository.AccountUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +23,16 @@ import java.util.Optional;
 public class AccountUserService {
 //    @Autowired
     private final AccountUserRepository accountUserRepository;
+    private PasswordEncoder passwordEncoder;
+    private AuthenticationManager authenticationManager;
+    private JWTService jwtService;
 
-    public AccountUserService(AccountUserRepository accountUserRepository) {
+    public AccountUserService(AccountUserRepository accountUserRepository,
+                              PasswordEncoder passwordEncoder,
+                              AuthenticationManager authenticationManager,
+                              JWTService jwtService) {
         this.accountUserRepository = accountUserRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     // Get all Account users
@@ -42,7 +55,19 @@ public class AccountUserService {
 
     // Create New Account User
     public ResponseEntity<AccountUser> addNewAccountUser(AccountUser accountUser){
+        accountUser.setPassword(passwordEncoder.encode(accountUser.getPassword()));
         return new ResponseEntity<>(accountUserRepository.save(accountUser), HttpStatus.CREATED);
+    }
+
+    public ResponseEntity<LoginResponse> authenticate(LoginRequest loginRequest){
+        Authentication authentication = authenticationManager
+                .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getUsername(),loginRequest.getPassword()));
+        if(authentication != null){
+            AccountUser accountUser = accountUserRepository.getByUsername(loginRequest.getUsername());
+            String token = jwtService.createToken(accountUser);
+            return new ResponseEntity<>(LoginResponse.builder().accountUser(accountUser).token(token).build(), HttpStatus.OK);
+        }
+        return null;
     }
 
     // Update an existing Account User

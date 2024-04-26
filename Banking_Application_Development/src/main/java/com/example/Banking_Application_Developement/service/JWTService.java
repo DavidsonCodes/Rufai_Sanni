@@ -1,5 +1,6 @@
 package com.example.Banking_Application_Developement.service;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -10,6 +11,7 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Function;
 
 public class JWTService {
 
@@ -21,10 +23,6 @@ public class JWTService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createToken(UserDetails userDetails){
-        return  createFreshToken(new HashMap<>(), userDetails);
-    }
-
     private String createFreshToken(Map<String, Object> mapOfClaims, UserDetails userDetails) {
         return Jwts.builder()
                 .addClaims(mapOfClaims)
@@ -34,6 +32,47 @@ public class JWTService {
                 .setIssuer("Banking Application 1.0")
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
-
     }
+
+    public String createToken(UserDetails userDetails){
+        return  createFreshToken(new HashMap<>(), userDetails);
+    }
+
+    private Claims extractAllClaims(String token){
+        return Jwts.parserBuilder().setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
+    }
+
+    public <T> T extractClaims(String token, Function<Claims, T> claimsTFunction){
+        Claims claims = extractAllClaims(token);
+        return claimsTFunction.apply(claims);
+    }
+
+    public String extractUsername(String token){
+        return extractClaims(token, Claims::getSubject);
+    }
+
+    public Date extractDateIssued(String token){
+        return extractClaims(token, Claims::getIssuedAt);
+    }
+
+    public Date extractExpiration(String token){
+        return extractClaims(token, Claims::getExpiration);
+    }
+    private boolean isTokenExpired(String token){
+        return extractExpiration(token).before(new Date(System.currentTimeMillis()));
+    }
+
+    private boolean isTokenGeneratedFromServer(String token){
+        return extractClaims(token, Claims::getIssuer).equals("Banking App 1.0");
+    }
+
+    public boolean isTokenValid(String token, UserDetails userDetails){
+        String username = extractClaims(token, Claims::getSubject);
+        return username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token);
+    }
+
+
 }
