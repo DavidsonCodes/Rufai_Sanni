@@ -37,7 +37,7 @@ public class JWTService {
     }
 
     public String createToken(UserDetails userDetails){
-        return  createFreshToken(new HashMap<>(), userDetails);
+        return createFreshToken(new HashMap<>(), userDetails);
     }
 
     private Claims extractAllClaims(String token){
@@ -75,6 +75,4 @@ public class JWTService {
         String username = extractClaims(token, Claims::getSubject);
         return username.equalsIgnoreCase(userDetails.getUsername()) && !isTokenExpired(token);
     }
-
-
 }
