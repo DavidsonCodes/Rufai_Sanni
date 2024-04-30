@@ -31,13 +31,13 @@ public class BankAccountController {
         return bankAccountService.getBankAccountByAccountUser(accountUser);
     }
 
-    @PostMapping
+    @PostMapping("")
     public ResponseEntity<BankAccount>createBankAccount(@RequestBody AccountUser accountUser){
         return bankAccountService.createBankAccount(accountUser);
     }
 
     @PostMapping("openingBalance")
-    public ResponseEntity<BankAccount>createBankAccount(@RequestBody AccountUser accountUser, double openingBal){
+    public ResponseEntity<BankAccount>createBankAccount(@RequestBody AccountUser accountUser, @RequestParam double openingBal){
         return bankAccountService.createBankAccount(accountUser, openingBal);
     }
 }
