@@ -1,4 +1,4 @@
-package com.example.Banking_Application_Developement.model;
+package com.example.Banking_Application_Developement.model.DTO;
 
 import lombok.Data;
 

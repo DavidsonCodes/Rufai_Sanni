@@ -27,8 +27,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws  Exception{
         httpSecurity.csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers("/users/register", "/users/login").permitAll()
-                        .requestMatchers("/users/all").hasAnyAuthority(Role.ADMIN.name())
+                        .requestMatchers("/api/v1/register", "/api/v1/login").permitAll()
+                        .requestMatchers("/api/v1/**").hasAnyAuthority(Role.ADMIN.name())
+//                        .requestMatchers("/users/all").hasAnyAuthority(Role.ADMIN.name())
+//                        .requestMatchers("/users/**").hasAnyAuthority(Role.USER.name())
+//                        .requestMatchers("/users/all").hasAnyAuthority(Role.USER.name())
                         .anyRequest().authenticated())
                 .sessionManagement( s -> s.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
@@ -36,6 +39,4 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults());
         return httpSecurity.build();
     }
-
-
 }

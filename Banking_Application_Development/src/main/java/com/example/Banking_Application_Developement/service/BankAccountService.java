@@ -27,6 +27,12 @@ public class BankAccountService {
     public ResponseEntity<BankAccount>getBankAccountByAccountUser(AccountUser accountUser){
         return new ResponseEntity<>(bankAccountRepository.getByAccountUser(accountUser), HttpStatus.OK);
     }
+    public ResponseEntity<BankAccount>getBankAccountByAccountNumber(String accountNumber){
+        return new ResponseEntity<>(bankAccountRepository.getBankAccountByAccountNumber(accountNumber), HttpStatus.OK);
+    }
+    public ResponseEntity<BankAccount>updateBankAccount(BankAccount bankAccount){
+        return new ResponseEntity<>(bankAccountRepository.save(bankAccount), HttpStatus.OK);
+    }
 
     public ResponseEntity<BankAccount>createBankAccount(AccountUser accountUser, double openingBalance){
 

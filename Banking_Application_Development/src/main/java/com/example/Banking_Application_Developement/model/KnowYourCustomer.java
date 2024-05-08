@@ -24,8 +24,7 @@ public class KnowYourCustomer {
     @JoinColumn(name = "account_user_id")
     private  AccountUser accountUser;
 
-    public KnowYourCustomer() {
-    }
+    public KnowYourCustomer() {}
 
     public KnowYourCustomer(String address, String bankVerificationNumber, String nin_number, String localGovtOfResidence, String stateOfResidence, String dateOfBirth, String nextOfKin, AccountUser accountUser) {
         this.address = address;

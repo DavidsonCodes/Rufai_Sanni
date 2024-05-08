@@ -1,9 +1,6 @@
 package com.example.Banking_Application_Developement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.validator.constraints.Length;
@@ -21,13 +18,16 @@ public class Transactions {
 
     @NotNull
     @Length(min = 10)
-    private String accountFrom;
+    private String accountNumber;
 
-    @NotNull
-    @Length(min = 10)
-    private String accountTo;
+//    @NotNull
+//    @Length(min = 10)
+//    private String accountTo;
 
     private Date transactionDate;
 
     private double amount;
+
+    @Enumerated(EnumType.STRING)
+    private  TransactionType transactionType;
 }

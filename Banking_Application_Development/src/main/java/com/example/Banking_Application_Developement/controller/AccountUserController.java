@@ -2,17 +2,15 @@ package com.example.Banking_Application_Developement.controller;
 
 
 import com.example.Banking_Application_Developement.model.AccountUser;
-import com.example.Banking_Application_Developement.model.LoginRequest;
-import com.example.Banking_Application_Developement.model.LoginResponse;
+import com.example.Banking_Application_Developement.model.DTO.LoginRequest;
+import com.example.Banking_Application_Developement.model.DTO.LoginResponse;
 import com.example.Banking_Application_Developement.service.AccountUserService;
+import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api/v1")
@@ -27,8 +25,7 @@ public class AccountUserController {
 
     // Get all Account Users
     @GetMapping("/allAccountUsers")
-//    @PreAuthorize("hasRole(ADMIN)")
-    @PreAuthorize("hasRole('ADMIN')")
+//    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<AccountUser>> getAllAccountUsers(){
         return accountUserService.getAllAccountUsers();
     }
@@ -52,12 +49,12 @@ public class AccountUserController {
 
     // Add new Account User
     @PostMapping("/register")
-    public ResponseEntity<AccountUser> addNewAccountUser(@RequestBody @Valid AccountUser accountUser){
+    public ResponseEntity<AccountUser> addNewAccountUser(@RequestBody @Valid AccountUser accountUser) throws MessagingException {
         return accountUserService.addNewAccountUser(accountUser);
     }
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid LoginRequest loginRequest){
+    public ResponseEntity<LoginResponse> authenticate(@RequestBody @Valid LoginRequest loginRequest) throws MessagingException {
         return accountUserService.authenticate(loginRequest);
     }
 

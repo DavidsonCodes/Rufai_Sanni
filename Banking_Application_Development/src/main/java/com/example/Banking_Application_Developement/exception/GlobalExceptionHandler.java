@@ -76,9 +76,10 @@ public class GlobalExceptionHandler {
         return exception.getMessage();
     }
 
-//    @ResponseStatus(HttpStatus.NOT_FOUND)
-//    @ExceptionHandler(Exception.class)
-//    public String handleNotFound(Exception exception){
-//        return exception.getMessage();
-//    }
+
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(TransactionException.class)
+    public String handleTransactionException(TransactionException exception){
+        return exception.getMessage();
+    }
 }

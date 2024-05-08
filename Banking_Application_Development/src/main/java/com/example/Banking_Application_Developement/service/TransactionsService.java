@@ -8,7 +8,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Service
 public class TransactionsService {
@@ -23,7 +25,15 @@ public class TransactionsService {
     public ResponseEntity<Transactions>getByTransactionsId(String transactionId){
         return new ResponseEntity<>(transactionRepository.findByTransactionsId(transactionId), HttpStatus.OK);
     }
-    public ResponseEntity<Transactions>posTransactions(Transactions transactions){
+    public ResponseEntity<Transactions>postTransactions(Transactions transactions){
+        StringBuilder transId = new StringBuilder();
+        transId.append("TXN");
+        for(int i=0; i <10; i++){
+            int random = new Random().nextInt(10);
+            transId.append(random);
+        }
+        transactions.setTransactionsId(transId.toString());
+        transactions.setTransactionDate(new Date(System.currentTimeMillis()));
         return new ResponseEntity<>(transactionRepository.save(transactions), HttpStatus.CREATED);
     }
 }

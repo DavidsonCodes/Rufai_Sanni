@@ -34,9 +34,9 @@ public class TransactionsController {
         return transactionsService.getByTransactionsId(transaction_id);
     }
 
-    @PostMapping("/transactions/{transaction_id}")
+    @PostMapping("")
     public ResponseEntity<Transactions> createTransaction(@RequestBody @Valid Transactions transactions){
-        return transactionsService.posTransactions(transactions);
+        return transactionsService.postTransactions(transactions);
     }
 
 }

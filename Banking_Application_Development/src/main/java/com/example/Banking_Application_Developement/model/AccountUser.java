@@ -43,12 +43,11 @@ public class AccountUser implements UserDetails {
     @Column(unique = true)
     private String username;
     @NotBlank(message = "This field cannot be blank")
-    @Length(min=8, max=20)
     private String password;
     @NotBlank(message = "This field cannot be blank")
 //    @Pattern(regexp = "^[0-9]+$", message = "Only numbers are allowed.")
-    @Pattern(regexp = "[0-9]{11}", message = "Only numbers are allowed.")
-    @Size(min = 11, max = 11, message = "Field length must be exactly 11 characters")
+    @Pattern(regexp = "[0-9]{11}")
+//    @Size(min = 11, max = 11, message = "Field length must be exactly 11 characters")
     private String phoneNumber;
 
     @Enumerated(EnumType.STRING)
@@ -100,6 +99,14 @@ public class AccountUser implements UserDetails {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Role getRole() {
+        return role;
+    }
+
+    public void setRole(Role role) {
+        this.role = role;
     }
 
     @Override
