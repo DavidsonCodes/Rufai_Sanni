@@ -5,23 +5,43 @@ import com.example.Banking_Application_Developement.model.AccountUser;
 import com.example.Banking_Application_Developement.model.DTO.LoginRequest;
 import com.example.Banking_Application_Developement.model.DTO.LoginResponse;
 import com.example.Banking_Application_Developement.service.AccountUserService;
+import com.example.Banking_Application_Developement.service.MessageService;
+import jakarta.mail.MessageContext;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Random;
 
 @RestController
 @RequestMapping("api/v1")
 public class AccountUserController {
-//    @Autowired
-    private final AccountUserService accountUserService;
+    @Autowired
+    private AccountUserService accountUserService;
+    @Autowired
+    private MessageService messageService;
 
-    public AccountUserController(AccountUserService accountUserService) {
-        this.accountUserService = accountUserService;
-    }
+//    public AccountUserController(AccountUserService accountUserService, MessageService messageService) {
+//        this.accountUserService = accountUserService;
+//        this.messageService = messageService;
+//    }
 // Create endpoints
+
+    // Get Reset password code
+    public void getResetCode(String username) throws MessagingException {
+        AccountUser accountUser = accountUserService.getAccountUserByUsername(username).getBody();
+        StringBuilder randomCode = new StringBuilder();
+        int count = 1;
+        while(count <= 6){
+            String x = String.valueOf(new Random().nextInt(10));
+            randomCode.append(x);
+            count++;
+        }
+        messageService.sendResetCode(accountUser.getUsername(), randomCode.toString());
+    }
 
     // Get all Account Users
     @GetMapping("/allAccountUsers")

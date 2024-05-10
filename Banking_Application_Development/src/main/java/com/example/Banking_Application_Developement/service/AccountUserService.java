@@ -63,7 +63,6 @@ public class AccountUserService {
     }
 
     // Create New Account User
-
     public ResponseEntity<AccountUser> addNewAccountUser(AccountUser accountUser) throws MessagingException {
         accountUser.setPassword(passwordEncoder.encode(accountUser.getPassword()));
 //        accountUser.setRole(accountUser.getRole());

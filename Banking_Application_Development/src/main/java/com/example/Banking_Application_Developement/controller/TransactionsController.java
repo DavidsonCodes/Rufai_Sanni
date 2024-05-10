@@ -33,8 +33,7 @@ public class TransactionsController {
     public ResponseEntity<Transactions> getById(@PathVariable String transaction_id){
         return transactionsService.getByTransactionsId(transaction_id);
     }
-
-    @PostMapping("")
+    @PostMapping("/transactions")
     public ResponseEntity<Transactions> createTransaction(@RequestBody @Valid Transactions transactions){
         return transactionsService.postTransactions(transactions);
     }

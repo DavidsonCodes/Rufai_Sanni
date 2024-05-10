@@ -16,7 +16,7 @@ public class KYCController {
     @Autowired
     private KYCService kycService;
 
-    @GetMapping("kyc")
+    @GetMapping("/kyc")
     public ResponseEntity<List<KnowYourCustomer>> getAllKYC(){
         return kycService.getAllKYC();
     }

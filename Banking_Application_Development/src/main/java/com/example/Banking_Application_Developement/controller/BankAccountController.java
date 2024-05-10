@@ -7,6 +7,7 @@ import com.example.Banking_Application_Developement.model.BankAccount;
 import com.example.Banking_Application_Developement.model.OperationRequest;
 import com.example.Banking_Application_Developement.service.BankAccountService;
 import com.example.Banking_Application_Developement.service.BankingOperationService;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -61,6 +62,7 @@ public class BankAccountController {
     }
 
     @PostMapping("/transfer")
+    @Transactional
     public ResponseEntity<String>transferFund(OperationRequest request){
         try{
             operationService.withdrawFund(request.getAccountNumber(), request.getAmount());
